@@ -1,1 +1,54 @@
-export const dynamic = 'force-dynamic'\nimport { NextResponse } from 'next/server'\nimport { getServerSession } from 'next-auth'\nimport { authOptions } from '@/lib/auth'\nimport { prisma } from '@/lib/prisma'\n\nexport async function GET() {\n  try {\n    const session = await getServerSession(authOptions)\n\n    if (!session?.user) {\n      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })\n    }\n\n    // Check if user is admin\n    const user = await prisma.user.findUnique({\n      where: { email: session.user.email! },\n      select: { isAdmin: true },\n    })\n\n    if (!user?.isAdmin) {\n      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })\n    }\n\n    // Fetch all customers with their order and subscription counts\n    const customers = await prisma.user.findMany({\n      select: {\n        id: true,\n        name: true,\n        email: true,\n        image: true,\n        isAdmin: true,\n        createdAt: true,\n        _count: {\n          select: {\n            orders: true,\n            subscriptions: true,\n          },\n        },\n      },\n      orderBy: {\n        createdAt: 'desc',\n      },\n    })\n\n    return NextResponse.json({ customers })\n  } catch (error) {\n    console.error('Error fetching customers:', error)\n    return NextResponse.json(\n      { error: 'Failed to fetch customers' },\n      { status: 500 }\n    )\n  }\n}\n
+export const dynamic = 'force-dynamic'
+import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
+
+export async function GET() {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Check if user is admin
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email! },
+      select: { isAdmin: true },
+    })
+
+    if (!user?.isAdmin) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    // Fetch all customers with their order and subscription counts
+    const customers = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        isAdmin: true,
+        createdAt: true,
+        _count: {
+          select: {
+            orders: true,
+            subscriptions: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return NextResponse.json({ customers })
+  } catch (error) {
+    console.error('Error fetching customers:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch customers' },
+      { status: 500 }
+    )
+  }
+}
