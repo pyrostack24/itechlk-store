@@ -8,7 +8,11 @@ import { BackToTop } from '@/components/BackToTop'
 import { Providers } from '@/components/Providers'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+})
 
 export const metadata: Metadata = {
   title: 'iTechLK Store - Premium Accounts at Affordable Prices',
