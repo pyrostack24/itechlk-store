@@ -295,7 +295,7 @@ export default function HomePage() {
                     
                     <CardFooter className="pt-0 pb-6 px-4">
                       <Link href={`/products/${product.slug}`} className="w-full">
-                        <Button variant="primary" className="w-full group-hover:shadow-xl transition-all text-sm h-11">
+                        <Button variant="primary" className="w-full group-hover:shadow-xl transition-all text-sm h-11 whitespace-nowrap">
                           Get Started
                           <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-2 transition-transform" />
                         </Button>
