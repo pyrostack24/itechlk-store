@@ -36,13 +36,13 @@ export function generateInvoicePDF(data: InvoiceData) {
   
   // Enhanced Colors
   const primaryColor: [number, number, number] = [102, 126, 234] // #667eea
-  const secondaryColor = [118, 75, 162] // #764ba2
-  const darkColor = [23, 23, 23]
-  const grayColor = [115, 115, 115]
-  const lightGray = [245, 245, 245]
-  const successColor = [16, 185, 129]
-  const warningColor = [245, 158, 11]
-  const dangerColor = [239, 68, 68]
+  const secondaryColor: [number, number, number] = [118, 75, 162] // #764ba2
+  const darkColor: [number, number, number] = [23, 23, 23]
+  const grayColor: [number, number, number] = [115, 115, 115]
+  const lightGray: [number, number, number] = [245, 245, 245]
+  const successColor: [number, number, number] = [16, 185, 129]
+  const warningColor: [number, number, number] = [245, 158, 11]
+  const dangerColor: [number, number, number] = [239, 68, 68]
   
   let yPos = 0
 
