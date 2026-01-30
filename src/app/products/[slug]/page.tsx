@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { notFound, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/Header'
@@ -65,9 +66,17 @@ interface Product {
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const router = useRouter()
+  const { data: session, status } = useSession()
   const { addItem } = useCartStore()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
+  
+  // Redirect to sign in if not authenticated
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin')
+    }
+  }, [status, router])
   
   // Check if product is lifetime (Software category)
   const isLifetime = product?.category === 'Software'
@@ -255,7 +264,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
   const durationOptions = getAvailableDurationOptions()
 
-  if (loading) {
+  if (loading || status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50">
         <div className="text-center">
@@ -264,6 +273,10 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         </div>
       </div>
     )
+  }
+
+  if (status === 'unauthenticated') {
+    return null
   }
 
   if (!product) {
