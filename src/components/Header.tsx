@@ -57,9 +57,9 @@ export default function Header() {
             <Image
               src="/logo.png"
               alt="iTechLK Logo"
-              width={48}
-              height={48}
-              className="h-12 w-12 object-contain"
+              width={225}
+              height={225}
+              className="h-36 w-36 md:h-42 md:w-42 lg:h-48 lg:w-48 object-contain"
               priority
             />
           </Link>
