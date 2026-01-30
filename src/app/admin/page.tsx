@@ -203,18 +203,20 @@ export default function AdminDashboard() {
 
             <Card className="border-2 border-neutral-200 hover:border-purple-200 transition-all hover:shadow-xl">
               <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-sm text-neutral-600 mb-1 font-medium">Total Customers</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-neutral-900">{stats.totalCustomers}</p>
+                <Link href="/admin/customers" className="block">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-sm text-neutral-600 mb-1 font-medium">Total Customers</p>
+                      <p className="text-2xl sm:text-3xl font-bold text-neutral-900">{stats.totalCustomers}</p>
+                    </div>
+                    <div className="h-14 w-14 rounded-2xl bg-gradient-to-r from-purple-600 to-purple-700 flex items-center justify-center shadow-lg">
+                      <Users className="h-7 w-7 text-white" />
+                    </div>
                   </div>
-                  <div className="h-14 w-14 rounded-2xl bg-gradient-to-r from-purple-600 to-purple-700 flex items-center justify-center shadow-lg">
-                    <Users className="h-7 w-7 text-white" />
+                  <div className="flex items-center gap-1 text-sm text-neutral-600">
+                    <span className="font-medium">{stats.activeSubscriptions} active subscriptions</span>
                   </div>
-                </div>
-                <div className="flex items-center gap-1 text-sm text-neutral-600">
-                  <span className="font-medium">{stats.activeSubscriptions} active subscriptions</span>
-                </div>
+                </Link>
               </CardContent>
             </Card>
 
