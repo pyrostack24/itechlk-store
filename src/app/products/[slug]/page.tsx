@@ -146,7 +146,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     }
   }
 
-  const relatedProducts = product ? getRelatedProducts(product.id, product.category) : []
+  const relatedProducts = product ? getRelatedProducts(product.id, product.category, 4, product.slug) : []
 
   const handleAddToCart = () => {
     if (!product) return

@@ -525,9 +525,13 @@ export function getProductBySlug(slug: string): Product | undefined {
   return products.find(product => product.slug === slug)
 }
 
-export function getRelatedProducts(currentProductId: string, category: string, limit: number = 4): Product[] {
+export function getRelatedProducts(currentProductId: string, category: string, limit: number = 4, currentSlug?: string): Product[] {
   return products
-    .filter(product => product.id !== currentProductId && product.category === category)
+    .filter(product => 
+      product.id !== currentProductId && 
+      product.slug !== currentSlug &&
+      product.category === category
+    )
     .slice(0, limit)
 }
 
