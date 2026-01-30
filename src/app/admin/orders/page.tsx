@@ -217,7 +217,7 @@ export default function AdminOrdersPage() {
                       </div>
 
                       <div className="space-y-2">
-                        {order.items.map((item, index) => (
+                        {order.items.map((item: any, index: number) => (
                           <div key={index} className="flex items-center justify-between p-3 bg-neutral-50 rounded-lg border border-neutral-200">
                             <span className="text-sm font-medium text-neutral-900">
                               {item.product.name}
