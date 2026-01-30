@@ -69,6 +69,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { data: session, status } = useSession()
   const { addItem } = useCartStore()
   const [product, setProduct] = useState<Product | null>(null)
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   
   // Redirect to sign in if not authenticated
@@ -107,6 +108,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             reviewCount: data.product.reviewCount || 0,
           }
           setProduct(productData)
+          setRelatedProducts(getRelatedProducts(productData.id, productData.category, 4, productData.slug))
           
           // Set initial selected duration to first available month
           if (productData.availableMonths && productData.availableMonths.length > 0) {
@@ -120,12 +122,14 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       // Fallback to static products
       const staticProduct = getProductBySlug(params.slug)
       if (staticProduct) {
-        setProduct({
+        const productData = {
           ...staticProduct,
           availableMonths: (staticProduct as any).availableMonths || [1, 2, 3],
           rating: (staticProduct as any).rating || 4.5,
           reviewCount: (staticProduct as any).reviews || 0,
-        } as Product)
+        } as Product
+        setProduct(productData)
+        setRelatedProducts(getRelatedProducts(productData.id, productData.category, 4, productData.slug))
         setLoading(false)
       } else {
         notFound()
@@ -135,18 +139,19 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       // Fallback to static products
       const staticProduct = getProductBySlug(params.slug)
       if (staticProduct) {
-        setProduct({
+        const productData = {
           ...staticProduct,
           availableMonths: (staticProduct as any).availableMonths || [1, 2, 3],
           rating: (staticProduct as any).rating || 4.5,
           reviewCount: (staticProduct as any).reviews || 0,
-        } as Product)
+        } as Product
+        setProduct(productData)
+        setRelatedProducts(getRelatedProducts(productData.id, productData.category, 4, productData.slug))
       }
       setLoading(false)
     }
   }
 
-  const relatedProducts = product ? getRelatedProducts(product.id, product.category, 4, product.slug) : []
 
   const handleAddToCart = () => {
     if (!product) return
