@@ -218,7 +218,7 @@ export default function DashboardPage() {
                       </div>
                       
                       <div className="space-y-1 mb-3">
-                        {order.items.map((item, idx) => (
+                        {order.items.map((item: any, idx: number) => (
                           <p key={idx} className="text-sm text-neutral-600">
                             {item.name} × {item.quantity} ({item.months} month{item.months > 1 ? 's' : ''})
                           </p>
