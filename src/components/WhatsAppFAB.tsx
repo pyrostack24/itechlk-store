@@ -4,10 +4,15 @@ import * as React from 'react'
 import { MessageCircle, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { config } from '@/lib/config'
+import { usePathname } from 'next/navigation'
 
 export const WhatsAppFAB: React.FC = () => {
   const [isVisible, setIsVisible] = React.useState(false)
   const [showTooltip, setShowTooltip] = React.useState(false)
+  const pathname = usePathname()
+
+  // Hide on admin pages
+  const isAdminPage = pathname?.startsWith('/admin')
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +32,9 @@ export const WhatsAppFAB: React.FC = () => {
 
     return () => clearTimeout(timer)
   }, [])
+
+  // Don't render on admin pages
+  if (isAdminPage) return null
 
   return (
     <>
