@@ -10,7 +10,7 @@ function CustomPrismaAdapter(p: typeof prisma): Adapter {
   
   return {
     ...adapter,
-    async createUser(data) {
+    async createUser(data: any) {
       try {
         // Check if user with this googleId already exists
         if (data.googleId) {
