@@ -43,36 +43,29 @@ export async function POST(request: NextRequest) {
     )
 
     // Get products from database to get real ObjectIDs
-    const productSlugs = items.map((item: any) => {
-      // Map simple IDs to slugs
-      const idToSlugMap: Record<string, string> = {
-        '1': 'picsart',
-        '2': 'chatgpt-plus',
-        '3': 'netflix',
-        '4': 'capcut-pro',
-        '5': 'photoshop',
-        '6': 'gemini-advanced',
-        '7': 'canva-pro',
-        '8': 'premium-adult',
-        '9': 'windows-11-pro',
-        '10': 'microsoft-365',
-      }
-      return idToSlugMap[item.id] || item.id
-    })
+    const productIdentifiers = items.map((item: any) => item.id)
 
-    console.log('🔍 Looking up products with slugs:', productSlugs)
+    console.log('🔍 Looking up products with identifiers:', productIdentifiers)
 
+    // Try to find products by ID first (MongoDB ObjectId), then by slug
     const dbProducts = await prisma.product.findMany({
       where: {
-        slug: { in: productSlugs },
+        OR: [
+          { id: { in: productIdentifiers } },
+          { slug: { in: productIdentifiers } },
+        ],
       },
     })
 
-    console.log('📦 Found products:', dbProducts.length, 'out of', productSlugs.length)
-    console.log('   Products found:', dbProducts.map(p => p.slug).join(', '))
+    console.log('📦 Found products:', dbProducts.length, 'out of', productIdentifiers.length)
+    console.log('   Products found:', dbProducts.map(p => `${p.slug} (${p.id})`).join(', '))
 
-    // Create a map of slug to product ID
-    const slugToIdMap = new Map(dbProducts.map(p => [p.slug, p.id]))
+    // Create a map of both ID and slug to product ID
+    const identifierToIdMap = new Map()
+    dbProducts.forEach(p => {
+      identifierToIdMap.set(p.id, p.id)
+      identifierToIdMap.set(p.slug, p.id)
+    })
 
     // Create order
     const order = await prisma.order.create({
@@ -85,23 +78,10 @@ export async function POST(request: NextRequest) {
         paymentReceipt,
         items: {
           create: items.map((item: any) => {
-            const idToSlugMap: Record<string, string> = {
-              '1': 'picsart',
-              '2': 'chatgpt-plus',
-              '3': 'netflix',
-              '4': 'capcut-pro',
-              '5': 'photoshop',
-              '6': 'gemini-advanced',
-              '7': 'canva-pro',
-              '8': 'premium-adult',
-              '9': 'windows-11-pro',
-              '10': 'microsoft-365',
-            }
-            const slug = idToSlugMap[item.id] || item.id
-            const productId = slugToIdMap.get(slug)
+            const productId = identifierToIdMap.get(item.id)
             
             if (!productId) {
-              throw new Error(`Product not found for slug: ${slug}`)
+              throw new Error(`Product not found for identifier: ${item.id}`)
             }
             
             return {
