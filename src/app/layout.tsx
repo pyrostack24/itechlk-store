@@ -6,6 +6,7 @@ import { WhatsAppFAB } from '@/components/WhatsAppFAB'
 import { ScrollProgress } from '@/components/ScrollProgress'
 import { BackToTop } from '@/components/BackToTop'
 import { Providers } from '@/components/Providers'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           {children}
           <WhatsAppFAB />
           <BackToTop />
+          <SpeedInsights />
           <Toaster
             position="top-right"
             toastOptions={{
