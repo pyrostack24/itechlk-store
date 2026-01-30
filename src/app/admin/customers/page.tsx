@@ -3,11 +3,14 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import AdminLayout from '@/components/AdminLayout'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Users, Mail, Calendar, Shield, Search } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Users, Mail, Calendar, Shield, Search, ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface Customer {
   id: string
@@ -60,25 +63,36 @@ export default function CustomersPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <AdminLayout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-            <p className="mt-4 text-neutral-600">Loading customers...</p>
-          </div>
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-neutral-600">Loading customers...</p>
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-neutral-900">Customers</h1>
-          <p className="text-neutral-600 mt-2">Manage and view all registered customers</p>
-        </div>
+    <div className="min-h-screen flex flex-col bg-neutral-50">
+      <Header />
+      
+      <main className="flex-1 py-8 sm:py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-4">
+              <Link href="/admin">
+                <Button variant="ghost" size="sm" className="hover:bg-neutral-100">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Dashboard
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900">Customers</h1>
+                <p className="text-neutral-600 mt-1">Manage and view all registered customers</p>
+              </div>
+            </div>
+          </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -219,7 +233,10 @@ export default function CustomersPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
-    </AdminLayout>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   )
 }
