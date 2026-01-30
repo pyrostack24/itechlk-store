@@ -53,22 +53,15 @@ export default function Header() {
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 lg:h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group relative z-10">
-            <div className="relative">
-              {/* Animated glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-primary-600 via-secondary-600 to-accent-600 rounded-xl blur-xl opacity-40 group-hover:opacity-70 transition-all duration-500 animate-pulse-subtle" />
-              <div className="relative h-10 w-10 lg:h-12 lg:w-12 rounded-xl bg-gradient-to-br from-primary-600 via-secondary-600 to-accent-600 flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:shadow-primary-500/30 transition-all duration-300 group-hover:scale-110">
-                <Sparkles className="h-5 w-5 lg:h-6 lg:w-6 text-white group-hover:rotate-12 transition-transform duration-300" />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-primary-600 via-secondary-600 to-accent-600 bg-clip-text text-transparent group-hover:from-primary-700 group-hover:via-secondary-700 group-hover:to-accent-700 transition-all duration-300">
-                iTechLK
-              </span>
-              <span className="text-[10px] lg:text-xs text-neutral-500 font-medium -mt-1">
-                Tech Made Easy
-              </span>
-            </div>
+          <Link href="/" className="py-2">
+            <Image
+              src="/logo.png"
+              alt="iTechLK Logo"
+              width={225}
+              height={225}
+              className="h-36 w-36 md:h-42 md:w-42 lg:h-48 lg:w-48 object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

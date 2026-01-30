@@ -436,6 +436,33 @@
   @apply outline-none ring-2 ring-primary-500 ring-offset-2;
 }
 
+/* Mobile Touch Behavior - Disable hover effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable all hover effects on mobile */
+  *:hover {
+    /* Reset hover styles */
+  }
+  
+  /* Only allow pointer events on interactive elements */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Enable pointer events only for clickable elements */
+  a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"]) {
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Disable hover transforms and transitions on non-interactive elements */
+  div:not([role]):hover,
+  span:not([role]):hover,
+  p:hover,
+  h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+    transform: none !important;
+  }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

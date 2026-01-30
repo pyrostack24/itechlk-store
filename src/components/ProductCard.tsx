@@ -103,6 +103,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             "object-contain p-4 sm:p-6 lg:p-8 transition-all duration-500",
             isHovered && "scale-110"
           )}
+          loading="lazy"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
       </div>
 

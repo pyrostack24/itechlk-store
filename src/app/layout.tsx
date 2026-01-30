@@ -13,6 +13,14 @@ export const metadata: Metadata = {
   title: 'iTechLK Store - Premium Accounts at Affordable Prices',
   description: 'Get premium subscriptions for Netflix, ChatGPT, Canva Pro, and more at the best prices in Sri Lanka',
   keywords: 'premium accounts, netflix sri lanka, chatgpt plus, canva pro, cheap subscriptions',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/logo.png', sizes: '192x192', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: { url: '/logo.png', sizes: '180x180' },
+  },
 }
 
 export default function RootLayout({

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, Youtube, Sparkles, ArrowRight } from 'lucide-react'
 import { config } from '@/lib/config'
 
@@ -46,14 +47,14 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-10 gap-8 lg:gap-10">
             {/* Brand Section */}
             <div className="lg:col-span-4">
-              <Link href="/" className="inline-flex items-center gap-2 group mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
-                  <div className="relative h-10 w-10 rounded-lg bg-gradient-to-br from-primary-600 to-secondary-600 flex items-center justify-center shadow-lg">
-                    <Sparkles className="h-5 w-5 text-white" />
-                  </div>
-                </div>
-                <span className="text-xl font-bold text-neutral-900">iTechLK Store</span>
+              <Link href="/" className="hidden">
+                <Image
+                  src="/logo-footer.png"
+                  alt="iTechLK Logo"
+                  width={200}
+                  height={200}
+                  className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-contain"
+                />
               </Link>
               
               <p className="text-sm text-neutral-600 mb-6 leading-relaxed">

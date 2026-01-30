@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -21,12 +23,32 @@ import {
 } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 import { products } from '@/lib/products'
+import toast from 'react-hot-toast'
 
 export default function ProductsPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
   const categories = ['all', 'AI', 'Design', 'Video', 'Entertainment', 'Software', 'VPN', 'Adult']
+
+  const handleViewDetails = (productSlug: string) => {
+    if (status === 'loading') {
+      return // Wait for session to load
+    }
+    
+    if (!session) {
+      toast.error('Please sign in to view product details', {
+        icon: '🔒',
+        duration: 3000,
+      })
+      router.push('/auth/signin?callbackUrl=/products/' + productSlug)
+      return
+    }
+    
+    router.push(`/products/${productSlug}`)
+  }
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -99,8 +121,8 @@ export default function ProductsPage() {
           {/* Products Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
             {filteredProducts.map((product) => (
-              <Link key={product.id} href={`/products/${product.slug}`} className="block">
-                <Card className="group hover:-translate-y-2 transition-all duration-300 hover:shadow-xl border-2 hover:border-primary-200 bg-white overflow-hidden flex flex-col h-full cursor-pointer">
+              <div key={product.id}>
+                <Card className="group hover:-translate-y-2 transition-all duration-300 hover:shadow-xl border-2 hover:border-primary-200 bg-white overflow-hidden flex flex-col h-full">
                   {/* Badges */}
                   <div className="absolute top-1.5 right-1.5 sm:top-4 sm:right-4 z-10 flex flex-col gap-1 sm:gap-2">
                     {product.isPopular && (
@@ -132,6 +154,8 @@ export default function ProductsPage() {
                         width={product.slug === 'surfshark-vpn-premium' || product.slug === 'expressvpn-premium' || product.slug === 'windows-11-pro' || product.slug === 'picsart' || product.slug === 'netflix' ? 140 : 80}
                         height={product.slug === 'surfshark-vpn-premium' || product.slug === 'expressvpn-premium' || product.slug === 'windows-11-pro' || product.slug === 'picsart' || product.slug === 'netflix' ? 140 : 80}
                         className="object-contain group-hover:scale-110 transition-transform duration-300"
+                        loading="lazy"
+                        sizes="(max-width: 640px) 80px, (max-width: 1024px) 120px, 140px"
                       />
                     </div>
                     <CardTitle className="text-xs sm:text-lg lg:text-xl line-clamp-2 sm:line-clamp-none">{product.name}</CardTitle>
@@ -179,7 +203,11 @@ export default function ProductsPage() {
                     </CardContent>
 
                     <CardFooter className="pt-0 pb-2 sm:pb-6 px-2 sm:px-6">
-                      <Button variant="primary" className="w-full group-hover:shadow-lg transition-shadow text-[10px] sm:text-sm h-7 sm:h-10 px-2 sm:px-4">
+                      <Button 
+                        variant="primary" 
+                        className="w-full group-hover:shadow-lg transition-shadow text-[10px] sm:text-sm h-7 sm:h-10 px-2 sm:px-4"
+                        onClick={() => handleViewDetails(product.slug)}
+                      >
                         <span className="hidden sm:inline">View Details</span>
                         <span className="sm:hidden">View</span>
                         <ArrowRight className="h-2.5 w-2.5 sm:h-4 sm:w-4 ml-1 sm:ml-2 group-hover:translate-x-1 transition-transform" />
@@ -187,7 +215,7 @@ export default function ProductsPage() {
                     </CardFooter>
                   </div>
                 </Card>
-              </Link>
+              </div>
             ))}
           </div>
 

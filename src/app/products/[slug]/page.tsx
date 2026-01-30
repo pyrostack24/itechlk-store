@@ -325,7 +325,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                       width={400}
                       height={400}
                       className="object-contain group-hover:scale-110 transition-transform duration-500"
-                      unoptimized
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement
                         target.style.display = 'none'
