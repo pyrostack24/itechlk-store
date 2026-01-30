@@ -234,7 +234,7 @@ export default function Header() {
                   </Button>
                 </Link>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-center gap-3 px-4 py-3 bg-neutral-100 rounded-xl">
                     {session?.user?.image ? (
                       <Image 
