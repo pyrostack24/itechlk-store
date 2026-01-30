@@ -35,7 +35,7 @@ export function generateInvoicePDF(data: InvoiceData) {
   const doc = new jsPDF()
   
   // Enhanced Colors
-  const primaryColor = [102, 126, 234] // #667eea
+  const primaryColor: [number, number, number] = [102, 126, 234] // #667eea
   const secondaryColor = [118, 75, 162] // #764ba2
   const darkColor = [23, 23, 23]
   const grayColor = [115, 115, 115]
