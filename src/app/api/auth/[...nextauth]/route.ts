@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from '@/lib/prisma'
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'database',
   },
-  debug: true, // Enable debug mode to see detailed errors
+  debug: true,
   logger: {
     error(code, metadata) {
       console.error('NextAuth Error:', code, metadata)
