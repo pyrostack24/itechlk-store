@@ -113,9 +113,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       if (staticProduct) {
         setProduct({
           ...staticProduct,
-          availableMonths: staticProduct.availableMonths || [1, 2, 3],
-          rating: staticProduct.rating || 4.5,
-          reviewCount: staticProduct.reviews || 0,
+          availableMonths: (staticProduct as any).availableMonths || [1, 2, 3],
+          rating: (staticProduct as any).rating || 4.5,
+          reviewCount: (staticProduct as any).reviews || 0,
         } as Product)
         setLoading(false)
       } else {
@@ -128,9 +128,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       if (staticProduct) {
         setProduct({
           ...staticProduct,
-          availableMonths: staticProduct.availableMonths || [1, 2, 3],
-          rating: staticProduct.rating || 4.5,
-          reviewCount: staticProduct.reviews || 0,
+          availableMonths: (staticProduct as any).availableMonths || [1, 2, 3],
+          rating: (staticProduct as any).rating || 4.5,
+          reviewCount: (staticProduct as any).reviews || 0,
         } as Product)
       }
       setLoading(false)
