@@ -45,13 +45,13 @@ interface Product {
   slug: string
   description: string
   price: number
-  duration: number
+  duration?: number
   availableMonths: number[]
   image: string | null
   category: string
   features: string[]
   stock: number
-  isActive: boolean
+  isActive?: boolean
   isPopular: boolean
   requiresAge: boolean
   rating: number
