@@ -438,28 +438,56 @@
 
 /* Mobile Touch Behavior - Disable hover effects on touch devices */
 @media (hover: none) and (pointer: coarse) {
-  /* Disable all hover effects on mobile */
-  *:hover {
-    /* Reset hover styles */
+  /* Completely disable all hover effects on mobile */
+  .hover\:bg-primary-50:hover,
+  .hover\:bg-primary-100:hover,
+  .hover\:bg-neutral-50:hover,
+  .hover\:bg-neutral-100:hover,
+  .hover\:bg-error-50:hover,
+  .hover\:text-primary-600:hover,
+  .hover\:text-primary-700:hover,
+  .hover\:text-error-600:hover,
+  .hover\:text-error-700:hover,
+  .hover\:border-primary-400:hover,
+  .hover\:border-primary-600:hover,
+  .hover\:border-neutral-300:hover,
+  .hover\:-translate-y-1:hover,
+  .hover\:-translate-y-2:hover,
+  .hover\:translate-x-1:hover,
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .hover\:scale-\[1\.02\]:hover,
+  .hover\:shadow-lg:hover,
+  .hover\:shadow-xl:hover,
+  .hover\:shadow-2xl:hover,
+  .group:hover .group-hover\:scale-110,
+  .group:hover .group-hover\:translate-x-1 {
+    background-color: inherit !important;
+    color: inherit !important;
+    border-color: inherit !important;
+    transform: none !important;
+    box-shadow: inherit !important;
   }
   
-  /* Only allow pointer events on interactive elements */
+  /* Disable tap highlight */
   * {
     -webkit-tap-highlight-color: transparent;
   }
   
-  /* Enable pointer events only for clickable elements */
+  /* Enable tap highlight only for clickable elements */
   a, button, input, select, textarea, [role="button"], [tabindex]:not([tabindex="-1"]) {
     cursor: pointer;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: rgba(79, 70, 229, 0.1);
   }
   
-  /* Disable hover transforms and transitions on non-interactive elements */
-  div:not([role]):hover,
-  span:not([role]):hover,
-  p:hover,
-  h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+  /* Disable hover transforms on cards and non-interactive elements */
+  .card-modern:hover,
+  .card-premium:hover,
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .hover-glow:hover {
     transform: none !important;
+    box-shadow: inherit !important;
   }
 }
 
