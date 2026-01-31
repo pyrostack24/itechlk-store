@@ -14,6 +14,7 @@ export interface Product {
   isPopular: boolean
   rating: number
   reviews: number
+  reviewCount?: number // Optional: from API when fetching from database
   requiresAge: boolean
   deliveryTime: string
   warranty: string
