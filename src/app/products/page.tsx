@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -19,10 +19,11 @@ import {
   AlertCircle,
   Info,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
-import { products } from '@/lib/products'
+import { products as staticProducts } from '@/lib/products'
 import toast from 'react-hot-toast'
 
 export default function ProductsPage() {
@@ -30,8 +31,31 @@ export default function ProductsPage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [products, setProducts] = useState(staticProducts)
+  const [loading, setLoading] = useState(true)
 
   const categories = ['all', 'AI', 'Design', 'Video', 'Entertainment', 'Software', 'VPN', 'Adult']
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('/api/products')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.products && data.products.length > 0) {
+          setProducts(data.products)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error)
+      // Keep using static products as fallback
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleViewDetails = (productSlug: string) => {
     if (status === 'loading') {
@@ -55,6 +79,21 @@ export default function ProductsPage() {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory
     return matchesSearch && matchesCategory
   })
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-neutral-50">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary-600 mx-auto mb-4" />
+            <p className="text-neutral-600">Loading products...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-neutral-50">
