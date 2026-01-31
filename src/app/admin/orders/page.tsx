@@ -73,13 +73,13 @@ export default function AdminOrdersPage() {
     }
   }
 
-  const handleDeleteOrder = async (orderId: string, orderNumber: string) => {
+  const handleDeleteOrder = async (orderNumber: string) => {
     if (!confirm(`Are you sure you want to permanently delete order ${orderNumber}?\n\nThis will delete:\n- Order record\n- Order items\n- Related subscriptions\n- All associated data\n\nThis action CANNOT be undone!`)) {
       return
     }
 
     try {
-      const response = await fetch(`/api/admin/orders/${orderId}`, {
+      const response = await fetch(`/api/admin/orders/${orderNumber}`, {
         method: 'DELETE',
       })
 
@@ -277,7 +277,7 @@ export default function AdminOrdersPage() {
                         variant="ghost"
                         size="sm"
                         className="flex-1 lg:flex-none text-error-600 hover:text-error-700 hover:bg-error-50 border border-error-200"
-                        onClick={() => handleDeleteOrder(order.id, order.orderNumber)}
+                        onClick={() => handleDeleteOrder(order.orderNumber)}
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete
