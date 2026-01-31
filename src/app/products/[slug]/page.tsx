@@ -416,9 +416,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   <span className="text-xs sm:text-sm lg:text-base text-neutral-600">{product.reviewCount} reviews</span>
                   <div className="h-4 sm:h-6 w-px bg-neutral-300 hidden sm:block" />
                   <div className="flex items-center gap-1.5 sm:gap-2">
-                    <div className={`h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full ${product.stock > 10 ? 'bg-success-500' : 'bg-warning-500'}`} />
+                    <div className={`h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full ${
+                      product.stock === 0 ? 'bg-error-500' : product.stock > 10 ? 'bg-success-500' : 'bg-warning-500'
+                    }`} />
                     <span className="text-xs sm:text-sm lg:text-base text-neutral-600">
-                      {product.stock > 10 ? 'In Stock' : `Only ${product.stock} left`}
+                      {product.stock === 0 ? 'Out of Stock' : product.stock > 10 ? 'In Stock' : `Only ${product.stock} left`}
                     </span>
                   </div>
                 </div>

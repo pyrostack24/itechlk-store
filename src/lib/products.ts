@@ -519,6 +519,48 @@ export const products: Product[] = [
     deliveryTime: '5-15 minutes',
     warranty: '30-day replacement guarantee'
   },
+  {
+    id: '13',
+    name: 'YouTube Premium',
+    slug: 'youtube-premium',
+    price: 400,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Youtube_logo.png/1200px-Youtube_logo.png',
+    category: 'Entertainment',
+    description: 'Ad-free YouTube with background play and downloads',
+    longDescription: 'YouTube Premium offers an enhanced viewing experience with ad-free videos, background playback, and offline downloads. Enjoy uninterrupted music and videos across all your devices, plus access to YouTube Music Premium. Perfect for content enthusiasts who want the best YouTube experience without interruptions.',
+    features: [
+      'Ad-free videos across YouTube',
+      'Background play on mobile devices',
+      'Download videos for offline viewing',
+      'YouTube Music Premium included',
+      'Access to YouTube Originals',
+      'Picture-in-picture mode',
+      'High-quality audio streaming',
+      'Support your favorite creators'
+    ],
+    whatsIncluded: [
+      'YouTube Premium subscription (1 month)',
+      'YouTube Music Premium access',
+      'Ad-free experience on all devices',
+      'Offline downloads',
+      'Background playback'
+    ],
+    compatibility: [
+      'Web browser (all modern browsers)',
+      'iOS app (iOS 12.0 or later)',
+      'Android app (Android 5.0 or later)',
+      'Smart TVs (Android TV, Samsung, LG)',
+      'Game consoles (PlayStation, Xbox)',
+      'Streaming devices (Chromecast, Roku)'
+    ],
+    stock: 100,
+    isPopular: true,
+    rating: 4.8,
+    reviews: 320,
+    requiresAge: false,
+    deliveryTime: '5-10 minutes',
+    warranty: '30-day replacement guarantee'
+  },
 ]
 
 export function getProductBySlug(slug: string): Product | undefined {

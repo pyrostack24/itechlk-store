@@ -186,9 +186,11 @@ export default function ProductsPage() {
 
                     {/* Stock indicator */}
                     <div className="flex items-center justify-center sm:justify-start gap-1 sm:gap-2 text-[10px] sm:text-sm">
-                      <div className={`h-1 w-1 sm:h-2 sm:w-2 rounded-full ${product.stock > 10 ? 'bg-success-500' : 'bg-warning-500'}`} />
+                      <div className={`h-1 w-1 sm:h-2 sm:w-2 rounded-full ${
+                        product.stock === 0 ? 'bg-error-500' : product.stock > 10 ? 'bg-success-500' : 'bg-warning-500'
+                      }`} />
                       <span className="text-neutral-600">
-                        {product.stock > 10 ? 'In Stock' : `${product.stock} left`}
+                        {product.stock === 0 ? 'Out of Stock' : product.stock > 10 ? 'In Stock' : `${product.stock} left`}
                       </span>
                     </div>
                   </CardContent>

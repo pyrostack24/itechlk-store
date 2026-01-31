@@ -13,7 +13,7 @@ import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, updateMonths, getTotalPrice } = useCartStore()
+  const { items, removeItem, updateQuantity, getTotalPrice } = useCartStore()
 
   if (items.length === 0) {
     return (
@@ -75,51 +75,32 @@ export default function CartPage() {
 
                       {/* Product Details */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-xl font-semibold text-neutral-900 mb-3">{item.name}</h3>
+                        <h3 className="text-xl font-semibold text-neutral-900 mb-4">{item.name}</h3>
                         
-                        {/* Duration Selector */}
-                        <div className="mb-4">
-                          <label className="text-sm font-medium text-neutral-700 mb-2 block">
-                            Duration
-                          </label>
-                          <div className="flex items-center gap-2">
-                            {[1, 2, 3].map((month) => (
-                              <Button
-                                key={month}
-                                variant={item.months === month ? 'primary' : 'outline'}
-                                size="sm"
-                                onClick={() => updateMonths(item.id, month)}
-                                className="min-w-[80px]"
-                              >
-                                {month} {month === 1 ? 'Month' : 'Months'}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-
                         {/* Quantity Controls */}
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
+                          <label className="text-sm font-medium text-neutral-700 mr-1">
+                            Quantity:
+                          </label>
+                          <div className="inline-flex items-center border-2 border-neutral-300 rounded-xl overflow-hidden bg-white shadow-sm hover:border-primary-400 transition-colors">
                             <Button
-                              variant="outline"
+                              variant="ghost"
                               size="icon"
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="h-10 w-10"
+                              disabled={item.quantity <= 1}
+                              className="h-10 w-10 rounded-none hover:bg-primary-50 hover:text-primary-700 disabled:opacity-40 disabled:cursor-not-allowed border-r border-neutral-200"
                             >
                               <Minus className="h-4 w-4" />
                             </Button>
-                            <Input
-                              type="number"
-                              value={item.quantity}
-                              onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1)}
-                              className="w-20 text-center h-10"
-                              min="1"
-                            />
+                            <div className="w-16 h-10 flex items-center justify-center">
+                              <span className="text-base font-semibold text-neutral-900">{item.quantity}</span>
+                            </div>
                             <Button
-                              variant="outline"
+                              variant="ghost"
                               size="icon"
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="h-10 w-10"
+                              disabled={item.quantity >= 10}
+                              className="h-10 w-10 rounded-none hover:bg-primary-50 hover:text-primary-700 disabled:opacity-40 disabled:cursor-not-allowed border-l border-neutral-200"
                             >
                               <Plus className="h-4 w-4" />
                             </Button>
@@ -129,7 +110,7 @@ export default function CartPage() {
                             variant="ghost"
                             size="icon"
                             onClick={() => removeItem(item.id)}
-                            className="text-error-500 hover:text-error-700 hover:bg-error-50 h-10 w-10"
+                            className="h-10 w-10 ml-2 text-error-500 hover:text-error-700 hover:bg-error-50 rounded-xl transition-all"
                           >
                             <Trash2 className="h-5 w-5" />
                           </Button>
@@ -139,10 +120,10 @@ export default function CartPage() {
                       {/* Price */}
                       <div className="text-right flex-shrink-0">
                         <div className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent mb-1">
-                          {formatPrice(item.price * item.quantity * item.months)}
+                          {formatPrice(item.price * item.quantity)}
                         </div>
                         <div className="text-sm text-neutral-500">
-                          {formatPrice(item.price)} × {item.quantity} × {item.months}mo
+                          {formatPrice(item.price)} × {item.quantity}
                         </div>
                       </div>
                     </div>
