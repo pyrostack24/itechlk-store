@@ -208,9 +208,9 @@ export default function ProductsPage() {
                     <div className="flex items-center justify-center gap-1 sm:gap-2">
                       <div className="flex items-center gap-0.5 sm:gap-1">
                         <Star className="h-2.5 w-2.5 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-[10px] sm:text-sm font-medium text-neutral-900">{product.rating}</span>
+                        <span className="text-[10px] sm:text-sm font-medium text-neutral-900">{product.rating ? product.rating.toFixed(1) : '0.0'}</span>
                       </div>
-                      <span className="text-[10px] sm:text-xs text-neutral-500">({product.reviews})</span>
+                      <span className="text-[10px] sm:text-xs text-neutral-500">({product.reviewCount || product.reviews || 0})</span>
                     </div>
 
                     {/* Features - Hidden on mobile */}

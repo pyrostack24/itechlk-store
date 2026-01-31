@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { products as staticProducts } from '@/lib/products'
 
 export async function GET(request: NextRequest) {
   try {
@@ -45,10 +46,15 @@ export async function GET(request: NextRequest) {
         ? totalRating / product.reviews.length 
         : 0
 
+      // Find static product to get default rating if no reviews exist
+      const staticProduct = staticProducts.find(p => p.slug === product.slug)
+      const finalRating = averageRating > 0 ? averageRating : (staticProduct?.rating || 0)
+      const finalReviewCount = product.reviews.length > 0 ? product.reviews.length : (staticProduct?.reviews || 0)
+
       return {
         ...product,
-        rating: averageRating,
-        reviewCount: product.reviews.length,
+        rating: finalRating,
+        reviewCount: finalReviewCount,
         reviews: undefined, // Remove reviews array from response
       }
     })

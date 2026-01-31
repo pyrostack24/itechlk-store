@@ -279,8 +279,8 @@ export default function HomePage() {
                   <CardContent className="text-center pb-4 flex-1 px-4 relative">
                     <div className="inline-flex items-center gap-1 text-sm text-neutral-600 mb-3 bg-yellow-50 px-3 py-1 rounded-full">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-semibold text-neutral-900">{product.rating}</span>
-                      <span className="text-neutral-500">({product.reviews})</span>
+                      <span className="font-semibold text-neutral-900">{product.rating ? product.rating.toFixed(1) : '0.0'}</span>
+                      <span className="text-neutral-500">({product.reviews || 0})</span>
                     </div>
                   </CardContent>
                   
