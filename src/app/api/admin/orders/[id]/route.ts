@@ -1,1 +1,66 @@
-import { NextRequest, NextResponse } from 'next/server'\nimport { getServerSession } from 'next-auth'\nimport { authOptions } from '@/lib/auth'\nimport prisma from '@/lib/prisma'\n\nexport async function DELETE(\n  request: NextRequest,\n  { params }: { params: { id: string } }\n) {\n  try {\n    const session = await getServerSession(authOptions)\n\n    if (!session?.user) {\n      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })\n    }\n\n    // Check if user is admin\n    const user = await prisma.user.findUnique({\n      where: { email: session.user.email! },\n    })\n\n    if (!user?.isAdmin) {\n      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 })\n    }\n\n    const orderId = params.id\n\n    // Check if order exists\n    const order = await prisma.order.findUnique({\n      where: { id: orderId },\n      include: {\n        items: true,\n      },\n    })\n\n    if (!order) {\n      return NextResponse.json({ error: 'Order not found' }, { status: 404 })\n    }\n\n    // Delete related subscriptions first (if any)\n    await prisma.subscription.deleteMany({\n      where: { orderId: orderId },\n    })\n\n    // Delete order items\n    await prisma.orderItem.deleteMany({\n      where: { orderId: orderId },\n    })\n\n    // Delete the order\n    await prisma.order.delete({\n      where: { id: orderId },\n    })\n\n    return NextResponse.json({\n      success: true,\n      message: 'Order and all related data deleted successfully',\n    })\n  } catch (error) {\n    console.error('Error deleting order:', error)\n    return NextResponse.json(\n      { error: 'Failed to delete order', details: error instanceof Error ? error.message : 'Unknown error' },\n      { status: 500 }\n    )\n  }\n}\n
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import prisma from '@/lib/prisma'
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Check if user is admin
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email! },
+    })
+
+    if (!user?.isAdmin) {
+      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 })
+    }
+
+    const orderId = params.id
+
+    // Check if order exists
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        items: true,
+      },
+    })
+
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
+    }
+
+    // Delete related subscriptions first (if any)
+    await prisma.subscription.deleteMany({
+      where: { orderId: orderId },
+    })
+
+    // Delete order items
+    await prisma.orderItem.deleteMany({
+      where: { orderId: orderId },
+    })
+
+    // Delete the order
+    await prisma.order.delete({
+      where: { id: orderId },
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Order and all related data deleted successfully',
+    })
+  } catch (error) {
+    console.error('Error deleting order:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete order', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    )
+  }
+}
