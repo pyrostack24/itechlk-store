@@ -229,10 +229,19 @@ export default function DashboardPage() {
                         <span className="text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
                           {formatPrice(order.total)}
                         </span>
-                        <Button variant="outline" size="sm">
-                          <Download className="h-4 w-4 mr-2" />
-                          Invoice
-                        </Button>
+                        {order.invoicePdf ? (
+                          <a href={order.invoicePdf} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Invoice
+                            </Button>
+                          </a>
+                        ) : (
+                          <Button variant="outline" size="sm" disabled>
+                            <Download className="h-4 w-4 mr-2" />
+                            No Invoice
+                          </Button>
+                        )}
                       </div>
                     </div>
                   )))
