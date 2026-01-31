@@ -19,6 +19,7 @@ import {
   Filter,
   Package,
   MessageSquare,
+  Trash2,
 } from 'lucide-react'
 import { formatPrice, formatDate } from '@/lib/utils'
 import toast from 'react-hot-toast'
@@ -69,6 +70,30 @@ export default function AdminOrdersPage() {
       toast.error('Error loading orders')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeleteOrder = async (orderId: string, orderNumber: string) => {
+    if (!confirm(`Are you sure you want to permanently delete order ${orderNumber}?\n\nThis will delete:\n- Order record\n- Order items\n- Related subscriptions\n- All associated data\n\nThis action CANNOT be undone!`)) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/admin/orders/${orderId}`, {
+        method: 'DELETE',
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        toast.success('Order deleted successfully!')
+        fetchOrders() // Refresh the list
+      } else {
+        toast.error(data.error || 'Failed to delete order')
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error)
+      toast.error('Error deleting order')
     }
   }
 
@@ -247,6 +272,15 @@ export default function AdminOrdersPage() {
                       >
                         <MessageSquare className="h-4 w-4 mr-2" />
                         Contact
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="flex-1 lg:flex-none text-error-600 hover:text-error-700 hover:bg-error-50 border border-error-200"
+                        onClick={() => handleDeleteOrder(order.id, order.orderNumber)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
                       </Button>
                     </div>
                   </div>
