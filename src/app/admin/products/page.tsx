@@ -36,6 +36,7 @@ interface Product {
   price: number
   duration: number
   availableMonths: number[]
+  monthlyPricing?: Record<number, { price: number; discount: number }>
   image: string | null
   category: string
   features: string[]
@@ -382,9 +383,85 @@ export default function AdminProductsPage() {
 
               <div>
                 <label className="block text-sm font-semibold text-neutral-900 mb-3">
+                  Monthly Pricing & Discounts
+                </label>
+                <p className="text-xs text-neutral-600 mb-4">Set custom prices and discount percentages for each subscription duration:</p>
+                <div className="space-y-4">
+                  {[1, 3, 6, 12].map((month) => {
+                    const isAvailable = editingProduct.availableMonths?.includes(month)
+                    const pricing = editingProduct.monthlyPricing as any || {}
+                    const monthData = pricing[month] || { price: editingProduct.price * month, discount: 0 }
+                    
+                    return (
+                      <div
+                        key={month}
+                        className={`p-4 rounded-xl border-2 transition-all ${
+                          isAvailable
+                            ? 'bg-white border-primary-300'
+                            : 'bg-neutral-50 border-neutral-200 opacity-50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-sm font-bold text-neutral-900">
+                            {month === 12 ? '1 Year' : `${month} ${month === 1 ? 'Month' : 'Months'}`}
+                          </span>
+                          {!isAvailable && (
+                            <Badge variant="outline" className="text-xs">Not Available</Badge>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-neutral-700 mb-1">
+                              Price (LKR)
+                            </label>
+                            <Input
+                              type="number"
+                              value={monthData.price}
+                              onChange={(e) => {
+                                const newPricing = { ...pricing }
+                                newPricing[month] = { ...monthData, price: parseFloat(e.target.value) || 0 }
+                                setEditingProduct({ ...editingProduct, monthlyPricing: newPricing })
+                              }}
+                              disabled={!isAvailable}
+                              className="text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-neutral-700 mb-1">
+                              Discount (%)
+                            </label>
+                            <Input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={monthData.discount}
+                              onChange={(e) => {
+                                const newPricing = { ...pricing }
+                                newPricing[month] = { ...monthData, discount: parseFloat(e.target.value) || 0 }
+                                setEditingProduct({ ...editingProduct, monthlyPricing: newPricing })
+                              }}
+                              disabled={!isAvailable}
+                              className="text-sm"
+                            />
+                          </div>
+                        </div>
+                        {isAvailable && monthData.discount > 0 && (
+                          <div className="mt-2 text-xs text-success-600 font-medium">
+                            Final: {formatPrice(monthData.price - (monthData.price * monthData.discount / 100))} 
+                            (Save {formatPrice(monthData.price * monthData.discount / 100)})
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-neutral-900 mb-2">
                   Available Subscription Months
                 </label>
-                <p className="text-xs text-neutral-600 mb-3">Select which subscription durations customers can choose for this product:</p>
+                <p className="text-xs text-neutral-600 mb-3">Select which subscription durations customers can choose:</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[1, 3, 6, 12].map((month) => (
                     <label

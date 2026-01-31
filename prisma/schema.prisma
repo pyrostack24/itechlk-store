@@ -43,6 +43,7 @@ model Product {
   price           Float
   duration        Int      @default(1) // months (deprecated - use availableMonths)
   availableMonths Int[]    @default([1]) // Available subscription durations in months
+  monthlyPricing  Json?    // {"1": {"price": 400, "discount": 0}, "3": {"price": 1200, "discount": 5}}
   image           String?
   category        String
   features        String[]
