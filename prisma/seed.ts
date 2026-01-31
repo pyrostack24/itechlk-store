@@ -174,6 +174,20 @@ async function main() {
       isPopular: false,
       requiresAge: false,
     },
+    {
+      name: 'YouTube Premium',
+      slug: 'youtube-premium',
+      description: 'Ad-free YouTube with background play and downloads',
+      price: 400,
+      duration: 1,
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Youtube_logo.png/1200px-Youtube_logo.png',
+      category: 'Entertainment',
+      features: ['Ad-free Videos', 'Background Play', 'Offline Downloads', 'YouTube Music Premium'],
+      stock: 100,
+      isActive: true,
+      isPopular: true,
+      requiresAge: false,
+    },
   ]
 
   for (const product of products) {
